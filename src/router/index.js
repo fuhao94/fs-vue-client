@@ -5,7 +5,7 @@ import Index from 'pages/index/index'
 import Login from 'pages/login/login'
 import Register from 'pages/register/register'
 import UserAdmin from 'pages/userAdmin/userAdmin'
-import Postlist from 'pages/postlist/postlist'
+import ArticleDetail from 'pages/articleDetail/articleDetail'
 import Mdeditor from 'pages/mdeditor/mdeditor'
 import Publish from 'pages/publish/publish'
 import Test from 'pages/test'
@@ -49,12 +49,12 @@ const router = new Router({
       component: UserAdmin
     },
     {
-      path: '/postlist',
-      name: 'postlist',
+      path: '/articleDetail/:id',
+      name: 'articleDetail',
       meta: {
         requireAuth: true
       },
-      component: Postlist
+      component: ArticleDetail
     },
     {
       path: '/mdeditor',

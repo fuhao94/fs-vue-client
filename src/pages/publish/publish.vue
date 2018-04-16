@@ -1,6 +1,5 @@
 <template>
   <div class="publish">
-    <toolbar></toolbar>
     <div class="content">
       <div class="article_title">
         <i-input v-model="article.title" style="padding-right: 40px" placeholder="请输入文章题目">
@@ -20,13 +19,9 @@
 </template>
 
 <script>
-  import Toolbar from 'components/toolbar/toolbar'
   import {mapGetters} from 'vuex'
 
   export default {
-    components: {
-      Toolbar
-    },
     data() {
       return {
         article: {
@@ -42,7 +37,7 @@
       ])
     },
     created() {
-      this.getArticleDetail()
+      // this.getArticleDetail()
     },
     methods: {
       publish() {
@@ -54,10 +49,12 @@
         }
         console.log(data)
         this.$http.post('/art/add', data).then((res) => {
-
+          if (res.data.status === 1000) {
+            this.$Message.success('文章发布成功')
+          }
         })
-      },
-      getArticleDetail() {
+      }
+      /* getArticleDetail() {
         this.$http.get('/art/detail').then((res) => {
           res = res.data
           this.article = {
@@ -66,7 +63,7 @@
             content: res.msg[0].article_content
           }
         })
-      }
+      } */
     }
   }
 </script>

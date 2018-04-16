@@ -1,13 +1,22 @@
 <template>
   <div id="app">
+    <toolbar></toolbar>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+  import Toolbar from 'components/toolbar/toolbar'
+
+  export default {
+    components: {
+      Toolbar
+    },
+    created() {
+      console.log('%c既然都按下F12了，就去github给个star吧！', 'background:black;color:#fff')
+      console.log('https://github.com/isEddrick/fs-vue-client.git')
+    }
+  }
 </script>
 
 <style>

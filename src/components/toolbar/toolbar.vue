@@ -106,9 +106,8 @@
     width: 100%;
     height: 50px;
     padding: 0 20px;
-    position: absolute;
-    top: 0;
-    background: #f4f4f4;
+
+    background: #fff;
   }
 
   .toolbar-left img {
