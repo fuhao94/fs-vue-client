@@ -135,7 +135,7 @@
       },
       articleDel(id) {
         this.$http.post('/art/delete', {article_id: id}).then((res) => {
-          
+
         })
       }
     }
