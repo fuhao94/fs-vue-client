@@ -14,13 +14,19 @@
     </div>
     <div class="content">
       <div class="main">
-        <i-tabs>
-          <i-tab-pane label="原创" :disabled="original">
+        <i-tabs @on-click="tanChange">
+          <i-tab-pane v-for="(item,index) in article_type" :key="index"
+                      :label="item==='original'?'原创':item==='transfer'?'转载':item==='translate'?'翻译':''">
             <ul>
-              <li v-for="(item,index) in articleList" :key="index">
+              <li v-for="(item,index) in articleList"
+                  @mouseenter="mouseEnter(index)"
+                  @mouseleave="mouseLeave()"
+                  :key="index">
                 <router-link :to="{path:`/articleDetail/${item._id}`}">
                   <h3 class="article_title">{{item.article_title}}</h3>
                   <p class="article_content">{{item.article_content}}</p>
+                </router-link>
+                <div class="flex_control">
                   <div class="article_control">
                     <div class="art_info">
                       <div class="art_time">{{item.meta.updateAt}}</div>
@@ -35,12 +41,19 @@
                     </div>
                     <div class="art_setting"></div>
                   </div>
-                </router-link>
+
+                  <div class="art_manage" :class="{art_manage_hover:itemHover==index}">
+                    <router-link :to="{path:'/publish',query:{article_id:item._id}}">
+                      <i-button type="text" class="art_manage_edit">编辑</i-button>
+                    </router-link>
+                    <i-button type="text" class="art_manage_del">删除</i-button>
+                  </div>
+                </div>
               </li>
             </ul>
           </i-tab-pane>
-          <i-tab-pane label="转载" :disabled="transfer"></i-tab-pane>
-          <i-tab-pane label="翻译" :disabled="translate"></i-tab-pane>
+          <!--<i-tab-pane label="转载"></i-tab-pane>-->
+          <!--<i-tab-pane label="翻译"></i-tab-pane>-->
         </i-tabs>
         <transition name="keysearch">
           <i-input ref="searchInput"
@@ -67,13 +80,11 @@
       return {
         keyWords: '',
         placeholder: '',
-        original: false,
-        transfer: false,
-        translate: false,
-        article_type: 'original',
+        article_type: ['original', 'transfer', 'translate'],
         page: 1,
         pageSize: 10,
-        articleList: []
+        articleList: [],
+        itemHover: -1
       }
     },
     computed: {
@@ -91,24 +102,35 @@
       searchBlur() {
         this.$refs.searchInput.$el.style.width = '150px'
       },
-      getArticleList() {
-        let url = '/art/getArticleList?article_type=original' + '&article_title=' + '111'
+      getArticleList(type) {
         let header = {
           userId: this.userInfo.userId
         }
         let data = {
-          article_type: this.article_type,
+          article_type: type ? type : 'original',
           keyWords: this.keyWords,
           page: this.page,
           pageSize: this.pageSize
         }
         this.$http.post('/art/getArticleList', data, {headers: header}).then((res) => {
-          this.articleList = res.data.msg
-          this.articleList.forEach((item) => {
-            item.article_content = item.article_content.replace(/#/g, '')
-            item.meta.updateAt = UTCformat(item.meta.updateAt)
-          })
+          if (res.data.msg) {
+            this.articleList = res.data.msg
+            this.articleList.forEach((item) => {
+              item.article_content = item.article_content.replace(/#/g, '')
+              item.meta.updateAt = UTCformat(item.meta.updateAt)
+            })
+          }
         })
+      },
+      mouseEnter(index) {
+        this.itemHover = index
+      },
+      mouseLeave() {
+        this.itemHover = -1
+      },
+      tanChange(name) {
+        this.articleList = []
+        this.getArticleList(this.article_type[name])
       }
     }
   }
@@ -124,8 +146,6 @@
     background-size: cover;
     width: 100%;
     height: 310px;
-    position: absolute;
-    top: 50px;
     z-index: 1;
   }
 
@@ -187,7 +207,7 @@
 
   .main ul li {
     border-bottom: 1px dashed #e9e9e9;
-    padding-top: 16px;
+    padding: 16px;
   }
 
   .main ul li:last-child {
@@ -222,5 +242,31 @@
 
   .art_count, .art_comment {
     margin-left: 24px;
+  }
+
+  .flex_control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .art_manage {
+    font-size: 14px;
+    height: 24px;
+    width: 200px;
+    text-align: right;
+    display: none;
+  }
+
+  .art_manage_hover {
+    display: block !important;
+  }
+
+  .art_manage_edit {
+    color: #216e9d;
+  }
+
+  .art_manage_del {
+    color: #c92027;
   }
 </style>

@@ -3,7 +3,7 @@
     <div class="toolbar-left">
       <img src="/static/images/blog_logo.png" alt="logo">
       <ul class="navigation">
-        <li><a>首页</a></li>
+        <router-link to="/index"><li>首页</li></router-link>
         <li><a>个人</a></li>
         <li><a>关于</a></li>
       </ul>
@@ -27,11 +27,11 @@
         </router-link>
       </li>
       <li v-else class="login_status">
-        <router-link class="user_dis" to="/userAdmin">
+        <router-link class="user_dis" to="/userAdmin/articleManage">
           <img src="/static/images/default_avatar.png">
         </router-link>
         <Dropdown>
-          <router-link to="/userAdmin">
+          <router-link to="/userAdmin/articleManage">
             {{userInfo.username}}
           </router-link>
           <i-dropdown-menu slot="list">
@@ -73,6 +73,7 @@
         this.$http.post('/users/logout').then((res) => {
           if (res.data.status === 1000) {
             this.$Message.success('退出成功!')
+            this.$router.push('/login')
             this.setIsLogin(0)
           }
         })

@@ -2,17 +2,17 @@
   <div class="publish">
     <div class="content">
       <div class="article_title">
-        <i-input v-model="article.title" style="padding-right: 40px" placeholder="请输入文章题目">
-          <i-select v-model="article.type" slot="prepend" style="width: 80px;">
+        <i-input v-model="article.article_title" style="width: 92%" placeholder="请输入文章题目">
+          <i-select v-model="article.article_type" slot="prepend" style="width: 80px;">
             <i-option value="original">原创</i-option>
             <i-option value="transfer">转载</i-option>
             <i-option value="translate">翻译</i-option>
           </i-select>
         </i-input>
-        <i-button type="error" @click="publish">发布博客</i-button>
+        <i-button type="error" style="width: 6%" @click.native="publish">{{isPublish?'发布文章':'修改文章'}}</i-button>
       </div>
       <div class="main">
-        <mavon-editor v-model="article.content"/>
+        <mavon-editor v-model="article.article_content"/>
       </div>
     </div>
   </div>
@@ -25,10 +25,11 @@
     data() {
       return {
         article: {
-          title: '',
-          type: '',
-          content: ''
-        }
+          article_title: '',
+          article_type: '',
+          article_content: ''
+        },
+        isPublish: true
       }
     },
     computed: {
@@ -37,33 +38,47 @@
       ])
     },
     created() {
-      // this.getArticleDetail()
+      this.init()
     },
     methods: {
+      init() {
+        if (this.$route.query.article_id) {
+          this.getDetail()
+          this.isPublish = false
+        }
+      },
       publish() {
         let data = {
           userId: this.userInfo.userId,
-          article_title: this.article.title,
-          article_type: this.article.type,
-          article_content: this.article.content
+          article_title: this.article.article_title,
+          article_type: this.article.article_type,
+          article_content: this.article.article_content
         }
-        console.log(data)
-        this.$http.post('/art/add', data).then((res) => {
-          if (res.data.status === 1000) {
-            this.$Message.success('文章发布成功')
+        if (this.isPublish) {
+          this.$http.post('/art/add', data).then((res) => {
+            if (res.data.status === 1000) {
+              this.$Message.success('文章发布成功')
+            }
+          })
+        } else {
+          data.article_id = this.$route.query.article_id
+          this.$http.post('/art/articleEdit', data).then((res) => {
+            if (res.data.status === 1000) {
+              this.$Message.success('文章修改成功')
+              this.getDetail()
+            }
+          })
+        }
+      },
+      getDetail() {
+        let url = '/art/getArticleDetail?article_id=' + this.$route.query.article_id
+        this.$http.get(url).then((res) => {
+          res = res.data
+          if (res.status === 1000) {
+            this.article = res.msg
           }
         })
       }
-      /* getArticleDetail() {
-        this.$http.get('/art/detail').then((res) => {
-          res = res.data
-          this.article = {
-            title: res.msg[0].article_title,
-            type: res.msg[0].article_type,
-            content: res.msg[0].article_content
-          }
-        })
-      } */
     }
   }
 </script>
@@ -76,18 +91,12 @@
   .content {
     width: 100%;
     height: 100%;
-    position: absolute;
-    top: 50px;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
   .article_title {
     display: flex;
     justify-content: space-between;
     padding: 20px;
-    position: relative;
-    z-index: 10;
   }
 
   .main {

@@ -30,6 +30,7 @@ module.exports = {
     'no-unused-vars': 0,
     'no-trailing-spaces': 0,
     'no-multiple-empty-lines': 0,
-    'eqeqeq': 0
+    'eqeqeq': 0,
+    'no-unneeded-ternary': 0
   }
 }

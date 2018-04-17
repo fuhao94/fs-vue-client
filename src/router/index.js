@@ -5,6 +5,9 @@ import Index from 'pages/index/index'
 import Login from 'pages/login/login'
 import Register from 'pages/register/register'
 import UserAdmin from 'pages/userAdmin/userAdmin'
+import ArticleManage from 'pages/userAdmin/articleManage'
+import CommentManage from 'pages/userAdmin/commentManage'
+import ClassifyManage from 'pages/userAdmin/classifyManage'
 import ArticleDetail from 'pages/articleDetail/articleDetail'
 import Mdeditor from 'pages/mdeditor/mdeditor'
 import Publish from 'pages/publish/publish'
@@ -38,6 +41,9 @@ const router = new Router({
     {
       path: '/index',
       name: 'index',
+      meta: {
+        requireAuth: true
+      },
       component: Index
     },
     {
@@ -46,7 +52,21 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-      component: UserAdmin
+      component: UserAdmin,
+      children: [
+        {
+          path: '/userAdmin/articleManage',
+          component: ArticleManage
+        },
+        {
+          path: '/userAdmin/commentManage',
+          component: CommentManage
+        },
+        {
+          path: '/userAdmin/classifyManage',
+          component: ClassifyManage
+        }
+      ]
     },
     {
       path: '/articleDetail/:id',
