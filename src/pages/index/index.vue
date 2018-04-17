@@ -46,7 +46,8 @@
                     <router-link :to="{path:'/publish',query:{article_id:item._id}}">
                       <i-button type="text" class="art_manage_edit">编辑</i-button>
                     </router-link>
-                    <i-button type="text" class="art_manage_del">删除</i-button>
+                    <i-button type="text" class="art_manage_del" @click.native="articleDel(item.article_id)">删除
+                    </i-button>
                   </div>
                 </div>
               </li>
@@ -131,6 +132,11 @@
       tanChange(name) {
         this.articleList = []
         this.getArticleList(this.article_type[name])
+      },
+      articleDel(id) {
+        this.$http.post('/art/delete', {article_id: id}).then((res) => {
+          
+        })
       }
     }
   }
