@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <article-list :articleList="articleList" :art_total="art_total"></article-list>
+  <div class="articleManage">
+    <article-list :articleList="articleList" :art_total="art_total" @changePage="changePage"></article-list>
   </div>
 </template>
 
@@ -51,11 +51,17 @@
             })
           }
         })
+      },
+      changePage(page) {
+        this.page = page
+        this.getArticleList()
       }
     }
   }
 </script>
 
 <style scoped>
-
+  .articleManage {
+    height: 100%;
+  }
 </style>

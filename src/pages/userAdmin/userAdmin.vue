@@ -1,7 +1,7 @@
 <template>
   <div class="userAdmin">
     <div class="userMenu">
-      <i-menu width="200px" theme="light" active-name="1" @on-select="onSelect">
+      <i-menu width="200px" style="height: 100%" theme="light" active-name="1" @on-select="onSelect">
         <i-menu-group title="内容">
           <i-menu-item name="1">
             <i-icon type="ios-paper-outline"></i-icon>
@@ -62,7 +62,7 @@
 <style scoped>
   .userAdmin {
     width: 1200px;
-    height: 100%;
+    height: 1000px;
     margin: 50px auto;
     display: flex;
     justify-content: space-between;

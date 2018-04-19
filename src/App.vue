@@ -21,4 +21,9 @@
 
 <style>
   @import "common/style/reset.css";
+
+  #app {
+    width: 100%;
+    height: 100%;
+  }
 </style>

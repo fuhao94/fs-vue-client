@@ -2,39 +2,27 @@
   <div class="index">
     <div class="header">
       <div class="main">
-        <div class="header-top">
-          <div class="header-title">{{userInfo.username}}的博客</div>
-          <div class="header-edit">
-            <i-button style="color: #e4e4e4" type="ghost" shape="circle" icon="edit">修改个人资料</i-button>
-            <i-button style="color: #e4e4e4" type="ghost" shape="circle" icon="gear-b">管理博客</i-button>
-          </div>
-        </div>
-        <div class="header-description">{{userInfo.description}}</div>
+        <h2 class="header-title">{{userInfo.username}}的博客</h2>
+        <h3 class="header-description">{{userInfo.description}}</h3>
       </div>
     </div>
     <div class="content">
-      <div class="main">
-        <i-tabs @on-click="tanChange">
-          <i-tab-pane v-for="(item,index) in article_type" :key="index"
-                      :label="item==='original'?'原创':item==='transfer'?'转载':item==='translate'?'翻译':''">
-            <article-list :articleList="articleList" @hasDelete="hasDelete" :art_total="art_total"></article-list>
-          </i-tab-pane>
-        </i-tabs>
-        <transition name="keysearch">
-          <i-input ref="searchInput"
-                   @on-blur="searchBlur"
-                   @on-focus="searchFocus"
-                   class="searchInput"
-                   v-model="keyWords"
-                   icon="ios-search"
-                   :placeholder="placeholder"></i-input>
-        </transition>
+      <div class="header">
+
       </div>
-      <div class="aside"></div>
+      <div class="user_all">
+        <div class="aside"></div>
+        <div class="main">
+          <article-list
+            :articleList="articleList"
+            @hasDelete="hasDelete"
+            @changePage="changePage"
+            :art_total="art_total"
+          ></article-list>
+        </div>
+      </div>
     </div>
     <div class="footer"></div>
-
-
   </div>
 </template>
 
@@ -52,7 +40,7 @@
         keyWords: '',
         placeholder: '',
         page: 1,
-        pageSize: 10,
+        pageSize: 5,
         article_type: ['original', 'transfer', 'translate'],
         articleList: [],
         art_total: 0
@@ -96,10 +84,15 @@
         })
       },
       tanChange(name) {
+        this.page = 1
         this.getArticleList(this.article_type[name])
       },
       hasDelete(type) {
         this.getArticleList(type)
+      },
+      changePage(page) {
+        this.page = page
+        this.getArticleList()
       }
     }
   }
@@ -107,46 +100,56 @@
 
 <style scoped>
   .index {
-    background: #f4f4f4;
+    background: url("/static/images/bg-yellow.png") repeat;
+    height: 100%;
   }
 
   .header {
-    background: url("/static/images/bg_header.png") no-repeat fixed center;
-    background-size: cover;
     width: 100%;
-    height: 310px;
+    height: 100px;
     z-index: 1;
+    color: #454545;
+    font: bold 24px/40px 'microsoft yahei';
   }
 
   .header .main {
+    background: url("/static/images/title-yellow.png") no-repeat right bottom;
+    background-size: 680px;
     width: 1076px;
     margin: 0 auto;
-  }
-
-  .header-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 32px 0 16px;
+    height: 100px;
   }
 
   .header-title {
-    font-size: 32px;
-    color: #fff;
+    padding-top: 32px;
+    font-size: 24px;
   }
 
   .header-description {
-    color: #e4e4e4;
-    font-size: 16px;
+    font-size: 14px;
+    color: #666;
+    height: 20px;
+    line-height: 20px;
   }
 
   .content {
+    width: 1156px;
     position: absolute;
     top: 360px;
     left: 50%;
     margin-top: -170px;
     transform: translateX(-50%);
     z-index: 10;
+  }
+
+  .content .header {
+    width: 1156px;
+    height: 48px;
+    background: #454545;
+    margin-top: -40px;
+  }
+
+  .content .user_all {
     display: flex;
     justify-content: space-between;
   }
@@ -154,19 +157,15 @@
   .content .main {
     width: 800px;
     background: #fff;
-    margin-right: 16px;
     position: relative;
-  }
-
-  .searchInput {
-    width: 150px;
-    position: absolute;
-    top: 2px;
-    right: 10px;
+    padding: 20px 0;
   }
 
   .content .aside {
     width: 340px;
-    background: #fff;
+    margin-right: 16px;
+    /*background: #fff;*/
+    /*border: 1px solid #ccc;*/
+    /*border-top: none;*/
   }
 </style>

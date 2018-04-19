@@ -33,7 +33,7 @@
         </div>
       </li>
       <div class="i-page">
-        <i-page show-total show-elevator :page-size="pageSize" :total="art_total"></i-page>
+        <i-page @on-change="changePage" show-total show-elevator :page-size="pageSize" :total="art_total"></i-page>
       </div>
     </ul>
     <i-modal v-model="delModel" width="360">
@@ -98,6 +98,9 @@
             this.delModel = false
           }
         })
+      },
+      changePage(page) {
+        this.$emit('changePage', page)
       }
     }
   }
@@ -122,12 +125,13 @@
   .article_content {
     color: #999;
     font-size: 14px;
+    line-height: 20px;
     margin-bottom: 8px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
-    height: 42px;
+    height: 60px;
   }
 
   .article_control, .main .article_control .art_info {
