@@ -7,7 +7,7 @@ import iView from 'iview'
 
 Vue.use(iView)
 
-axios.defaults.timeout = 5000
+// axios.defaults.timeout = 5000
 
 axios.interceptors.request.use((config) => {
   iView.LoadingBar.start()

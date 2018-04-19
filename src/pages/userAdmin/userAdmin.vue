@@ -75,7 +75,7 @@
 
   .userContent {
     width: 1000px;
-    height: 500px;
-    background: aqua;
+    height: 100%;
+    background: #fff;
   }
 </style>
