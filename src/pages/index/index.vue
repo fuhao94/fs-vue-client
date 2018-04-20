@@ -11,7 +11,9 @@
 
       </div>
       <div class="user_all">
-        <div class="aside"></div>
+        <div class="aside">
+          <user-column></user-column>
+        </div>
         <div class="main">
           <article-list
             :articleList="articleList"
@@ -30,10 +32,12 @@
   import {mapGetters} from 'vuex'
   import {UTCformat} from '../../common/js/date'
   import ArticleList from 'components/articleList/articleList'
+  import UserColumn from 'components/userColumn/userColumn'
 
   export default {
     components: {
-      ArticleList
+      ArticleList,
+      UserColumn
     },
     data() {
       return {
@@ -55,12 +59,6 @@
       this.getArticleList()
     },
     methods: {
-      searchFocus() {
-        this.$refs.searchInput.$el.style.width = '300px'
-      },
-      searchBlur() {
-        this.$refs.searchInput.$el.style.width = '150px'
-      },
       getArticleList(type) {
         this.articleList = []
         let header = {
@@ -82,10 +80,6 @@
             })
           }
         })
-      },
-      tanChange(name) {
-        this.page = 1
-        this.getArticleList(this.article_type[name])
       },
       hasDelete(type) {
         this.getArticleList(type)
@@ -155,14 +149,14 @@
   }
 
   .content .main {
-    width: 800px;
+    width: 840px;
     background: #fff;
     position: relative;
     padding: 20px 0;
   }
 
   .content .aside {
-    width: 340px;
+    width: 300px;
     margin-right: 16px;
     /*background: #fff;*/
     /*border: 1px solid #ccc;*/

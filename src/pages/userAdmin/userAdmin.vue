@@ -29,6 +29,10 @@
             <i-icon type="ios-people"></i-icon>
             我的粉丝
           </i-menu-item>
+          <i-menu-item name="7">
+            <i-icon type="navicon-round"></i-icon>
+            栏目管理
+          </i-menu-item>
         </i-menu-group>
       </i-menu>
     </div>
