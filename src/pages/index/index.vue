@@ -1,12 +1,12 @@
 <template>
-  <div class="index">
+  <div class="index" ref="index">
     <div class="header">
       <div class="main">
         <h2 class="header-title">{{userInfo.username}}的博客</h2>
         <h3 class="header-description">{{userInfo.description}}</h3>
       </div>
     </div>
-    <div class="content">
+    <div class="content" ref="content">
       <div class="header">
 
       </div>
@@ -77,6 +77,9 @@
             this.articleList.forEach((item) => {
               item.article_content = item.article_content.replace(/#/g, '')
               item.meta.updateAt = UTCformat(item.meta.updateAt)
+            })
+            this.$nextTick(() => {
+              this.$refs.index.style.height = this.$refs.content.offsetHeight + 150 + 'px'
             })
           }
         })
