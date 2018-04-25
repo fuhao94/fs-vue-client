@@ -18,3 +18,7 @@ export const userInfo = (state) => {
   }
   return userInfo
 }
+
+export const menuIndex = (state) => {
+  return state.menuIndex
+}

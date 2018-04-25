@@ -6,7 +6,7 @@
 
 <script>
   import articleList from 'components/articleList/articleList'
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
   import {UTCformat} from '../../common/js/date'
 
   export default {
@@ -27,23 +27,23 @@
       ])
     },
     created() {
-      this.getArticleList()
+      this.init()
     },
     methods: {
+      init() {
+        this.getArticleList()
+        this.setMenuIndex('1')
+      },
       getArticleList() {
-        this.articleList = []
-        let header = {
-          userId: this.userInfo.userId
-        }
         let data = {
-          article_type: '',
           keyWords: this.keyWords,
           page: this.page,
-          pageSize: this.pageSize
+          pageSize: this.pageSize,
+          userId: this.userInfo.userId
         }
-        this.$http.post('/art/getArticleList', data, {headers: header}).then((res) => {
-          if (res.data.msg) {
-            this.articleList = res.data.msg
+        this.$http.post('/art/getArticleList', data).then((res) => {
+          if (res.data.result) {
+            this.articleList = res.data.result
             this.art_total = res.data.total
             this.articleList.forEach((item) => {
               item.article_content = item.article_content.replace(/#/g, '')
@@ -55,7 +55,10 @@
       changePage(page) {
         this.page = page
         this.getArticleList()
-      }
+      },
+      ...mapMutations({
+        setMenuIndex: 'SET_MENU_INDEX'
+      })
     }
   }
 </script>

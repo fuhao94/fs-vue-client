@@ -1,7 +1,7 @@
 <template>
   <div class="userAdmin">
     <div class="userMenu">
-      <i-menu width="200px" style="height: 100%" theme="light" active-name="1" @on-select="onSelect">
+      <i-menu width="200px" style="height: 100%" theme="light" :active-name=menuIndex @on-select="onSelect">
         <i-menu-group title="内容">
           <i-menu-item name="1">
             <i-icon type="ios-paper-outline"></i-icon>
@@ -43,20 +43,31 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
+
   export default {
     created() {
 
     },
+    computed: {
+      ...mapGetters([
+        'menuIndex'
+      ])
+    },
     methods: {
       onSelect(val) {
-        if (val === '1') {
-          this.$router.push('/userAdmin/articleManage')
-        }
-        if (val === '2') {
-          this.$router.push('/userAdmin/commentManage')
-        }
-        if (val === '3') {
-          this.$router.push('/userAdmin/ClassifyManage')
+        switch (Number(val)) {
+          case 1:
+            this.$router.push('/userAdmin/articleManage')
+            break
+          case 2:
+            this.$router.push('/userAdmin/commentManage')
+            break
+          case 3:
+            this.$router.push('/userAdmin/ClassifyManage')
+            break
+          case 7:
+            this.$router.push('/userAdmin/columnManage')
         }
       }
     }

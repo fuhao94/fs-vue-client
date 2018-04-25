@@ -8,6 +8,7 @@ import UserAdmin from 'pages/userAdmin/userAdmin'
 import ArticleManage from 'pages/userAdmin/articleManage'
 import CommentManage from 'pages/userAdmin/commentManage'
 import ClassifyManage from 'pages/userAdmin/classifyManage'
+import ColumnManage from 'pages/userAdmin/columnManage'
 import ArticleDetail from 'pages/articleDetail/articleDetail'
 import Mdeditor from 'pages/mdeditor/mdeditor'
 import Publish from 'pages/publish/publish'
@@ -56,15 +57,23 @@ const router = new Router({
       children: [
         {
           path: '/userAdmin/articleManage',
-          component: ArticleManage
+          component: ArticleManage,
+          name: 'articleManage'
         },
         {
           path: '/userAdmin/commentManage',
-          component: CommentManage
+          component: CommentManage,
+          name: 'commentManage'
         },
         {
           path: '/userAdmin/classifyManage',
-          component: ClassifyManage
+          component: ClassifyManage,
+          name: 'classifyManage'
+        },
+        {
+          path: '/userAdmin/columnManage',
+          component: ColumnManage,
+          name: 'columnManage'
         }
       ]
     },

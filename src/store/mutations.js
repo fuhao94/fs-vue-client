@@ -11,6 +11,9 @@ const mutations = {
   [types.SET_USER_INFO](state, userInfo) {
     state.userInfo = userInfo
     localStorage.setItem('userInfo', JSON.stringify(userInfo))
+  },
+  [types.SET_MENU_INDEX](state, menuIndex) {
+    state.menuIndex = menuIndex
   }
 }
 

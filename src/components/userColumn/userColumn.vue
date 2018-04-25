@@ -1,40 +1,51 @@
 <template>
   <div class="userManage">
-    <div class="title"></div>
-    <div class="userInfo">
-      <div class="head">
-        <img src="/static/images/default_avatar.png" width="62" height="62">
-        <div class="name">{{userColumn.username}}</div>
-      </div>
-      <ul class="center">
-        <li>
-          <span>原创</span>
-          <span>10</span>
-        </li>
-        <li>
-          <span>粉丝</span>
-          <span>12</span>
-        </li>
-        <li>
-          <span>关注</span>
-          <span>21</span>
-        </li>
-        <li>
-          <span>评论</span>
-          <span>999</span>
-        </li>
-      </ul>
-      <div class="bottom">
-        <div class="badge">
-          <img src="/static/images/zhuanlandaren.png" alt="持之以恒">
-          <img src="/static/images/chizhiyiheng.png" alt="专栏达人">
+    <ul>
+      <li v-for="(item,index) in userColumn.column" :key="index">
+        <div class="title">{{item.column_name}}</div>
+        <div class="userInfo" v-if="item.column_name==='个人信息' && item.isShow">
+          <div class="head">
+            <img src="/static/images/default_avatar.png" width="62" height="62">
+            <div class="name">{{userColumn.username}}</div>
+          </div>
+          <ul class="center">
+            <li>
+              <span>原创</span>
+              <span>10</span>
+            </li>
+            <li>
+              <span>粉丝</span>
+              <span>12</span>
+            </li>
+            <li>
+              <span>关注</span>
+              <span>21</span>
+            </li>
+            <li>
+              <span>评论</span>
+              <span>999</span>
+            </li>
+          </ul>
+          <div class="bottom">
+            <div class="badge">
+              <img src="/static/images/zhuanlandaren.png" alt="持之以恒">
+              <img src="/static/images/chizhiyiheng.png" alt="专栏达人">
+            </div>
+            <div class="member">
+              <div class="integral">积分：<span>10</span></div>
+              <div class="visit">访问量：<span>100</span></div>
+            </div>
+          </div>
         </div>
-        <div class="member">
-          <div class="integral">积分：<span>10</span></div>
-          <div class="visit">访问量：<span>100</span></div>
+        <div class="art_search" v-if="item.column_name==='文章搜索' && item.isShow">
+          <i-input v-model="keyWords" @on-enter="artSearch" @on-click="artSearch" icon="ios-search"
+                   placeholder="请输入文章比标题..."
+                   style="width: 90%;"></i-input>
         </div>
-      </div>
-    </div>
+        <div class="art_type" v-if="item.column_name==='文章分类' && item.isShow"></div>
+        <div class="archives" v-if="item.column_name==='文章存档' && item.isShow"></div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -46,7 +57,10 @@
     data() {
       return {
         title: '个人资料',
-        userColumn: ''
+        userColumn: '',
+        keyWords: '',
+        page: 1,
+        pageSize: 5
       }
     },
     computed: {
@@ -55,12 +69,28 @@
       ])
     },
     created() {
-      this.getUserInfo()
+      this.init()
     },
     methods: {
+      init() {
+        this.getUserInfo()
+      },
       getUserInfo() {
         this.$http.get('/users/getUserInfo?userId=' + this.userInfo.userId).then((res) => {
           this.userColumn = res.data.msg
+        })
+      },
+      artSearch() {
+        let data = {
+          userId: this.userInfo.userId,
+          keyWords: this.keyWords,
+          page: this.page,
+          pageSize: this.pageSize
+        }
+        this.$http.post('/art/getArticleList', data).then((res) => {
+          if (res.data.status === 1000) {
+            this.$emit('hasArtSearch', res.data)
+          }
         })
       }
     }
@@ -68,9 +98,15 @@
 </script>
 
 <style scoped>
+  .userManage ul li {
+    margin-bottom: 20px;
+  }
+
   .title {
     color: #333;
     background: #f5f5f5;
+    font-size: 12px;
+    font-weight: bold;
     height: 29px;
     line-height: 29px;
     padding-left: 11px;
@@ -143,4 +179,10 @@
     margin-top: 8px;
   }
 
+  .art_search {
+    background-color: #fff;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+  }
 </style>

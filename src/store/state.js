@@ -4,6 +4,7 @@
 
 const state = {
   isLogin: 0,
-  userInfo: {}
+  userInfo: {},
+  menuIndex: ''
 }
 export default state

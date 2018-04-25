@@ -12,7 +12,7 @@
       </div>
       <div class="user_all">
         <div class="aside">
-          <user-column></user-column>
+          <user-column @hasArtSearch="hasArtSearch"></user-column>
         </div>
         <div class="main">
           <article-list
@@ -59,20 +59,16 @@
       this.getArticleList()
     },
     methods: {
-      getArticleList(type) {
-        this.articleList = []
-        let header = {
-          userId: this.userInfo.userId
-        }
+      getArticleList() {
         let data = {
-          article_type: type ? type : 'original',
           keyWords: this.keyWords,
           page: this.page,
-          pageSize: this.pageSize
+          pageSize: this.pageSize,
+          userId: this.userInfo.userId
         }
-        this.$http.post('/art/getArticleList', data, {headers: header}).then((res) => {
-          if (res.data.msg) {
-            this.articleList = res.data.msg
+        this.$http.post('/art/getArticleList', data).then((res) => {
+          if (res.data.result) {
+            this.articleList = res.data.result
             this.art_total = res.data.total
             this.articleList.forEach((item) => {
               item.article_content = item.article_content.replace(/#/g, '')
@@ -90,6 +86,10 @@
       changePage(page) {
         this.page = page
         this.getArticleList()
+      },
+      hasArtSearch(data) {
+        this.articleList = data.result
+        this.art_total = data.total
       }
     }
   }

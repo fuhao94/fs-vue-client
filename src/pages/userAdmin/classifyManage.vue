@@ -3,7 +3,24 @@
 </template>
 
 <script>
-  export default {}
+  import {mapMutations} from 'vuex'
+
+  export default {
+    data() {
+      return {}
+    },
+    created() {
+      this.init()
+    },
+    methods: {
+      init() {
+        this.setMenuIndex('3')
+      },
+      ...mapMutations({
+        setMenuIndex: 'SET_MENU_INDEX'
+      })
+    }
+  }
 </script>
 
 <style scoped>
