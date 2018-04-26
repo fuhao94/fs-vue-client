@@ -9,12 +9,39 @@
             <i-option value="translate">翻译</i-option>
           </i-select>
         </i-input>
-        <i-button type="error" style="width: 6%" @click.native="publish">{{isPublish?'发布文章':'修改文章'}}</i-button>
+        <i-button type="error" style="width: 6%" @click.native="publishConfirm">{{isPublish?'发布文章':'修改文章'}}</i-button>
       </div>
       <div class="main">
         <mavon-editor v-model="article.article_content"/>
       </div>
     </div>
+    <i-modal
+      v-model="publishModal"
+      :title="isPublish?'发布博客':'修改博客'"
+      @on-ok="publish"
+      width="600px"
+      :mask-closable="false">
+      <div class="classify">
+        <span class="title">个人分类：</span>
+        <i-input @on-enter="stopInput(index)"
+                 @on-blur="stopInput(index)"
+                 v-for="(item,index) in newClassify"
+                 :key="index"
+                 v-model="item.name"
+                 :disabled="item.disabled"
+                 @on-click="removeClassify(index)"
+                 icon="close-round"
+                 size="small"
+                 style="max-width: 80px;margin-right: 10px">
+        </i-input>
+        <span class="add">
+          <i-icon class="newClassifyIcon" type="plus-circled" color="#349edf" @click.native="addClassify" size="18"
+                  title="添加新分类"></i-icon>
+        </span>
+      </div>
+      <p>Content of dialog</p>
+      <p>Content of dialog</p>
+    </i-modal>
   </div>
 </template>
 
@@ -29,7 +56,9 @@
           article_type: '',
           article_content: ''
         },
-        isPublish: true
+        isPublish: true,
+        publishModal: false,
+        newClassify: []
       }
     },
     computed: {
@@ -46,6 +75,9 @@
           this.getDetail()
           this.isPublish = false
         }
+      },
+      publishConfirm() {
+        this.publishModal = true
       },
       publish() {
         let data = {
@@ -78,6 +110,22 @@
             this.article = res.msg
           }
         })
+      },
+      addClassify() {
+        if (this.newClassify.length >= 3) {
+          return
+        }
+        let classify = {
+          name: '',
+          disabled: false
+        }
+        this.newClassify.push(classify)
+      },
+      stopInput(index) {
+        this.newClassify[index].disabled = true
+      },
+      removeClassify(index) {
+        this.newClassify.splice(index, 1)
       }
     }
   }
@@ -104,5 +152,27 @@
     height: 100%;
     position: relative;
     z-index: 1;
+  }
+
+  .classify {
+    font-size: 14px;
+    height: 25px;
+    line-height: 25px;
+    display: flex;
+  }
+
+  .classify .title {
+    line-height: 25px;
+    font-weight: bold;
+    margin-right: 5px;
+  }
+
+  .classify .add {
+    display: flex;
+    align-items: center;
+  }
+
+  .newClassifyIcon:hover {
+    cursor: pointer;
   }
 </style>

@@ -56,24 +56,20 @@ const router = new Router({
       component: UserAdmin,
       children: [
         {
-          path: '/userAdmin/articleManage',
-          component: ArticleManage,
-          name: 'articleManage'
+          path: 'articleManage',
+          component: ArticleManage
         },
         {
-          path: '/userAdmin/commentManage',
-          component: CommentManage,
-          name: 'commentManage'
+          path: 'commentManage',
+          component: CommentManage
         },
         {
-          path: '/userAdmin/classifyManage',
-          component: ClassifyManage,
-          name: 'classifyManage'
+          path: 'classifyManage',
+          component: ClassifyManage
         },
         {
-          path: '/userAdmin/columnManage',
-          component: ColumnManage,
-          name: 'columnManage'
+          path: 'columnManage',
+          component: ColumnManage
         }
       ]
     },

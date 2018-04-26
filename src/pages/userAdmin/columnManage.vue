@@ -24,15 +24,13 @@
             title: '是否显示',
             key: 'isShow',
             width: 150,
+            align: 'center',
             render: (h, params) => {
               return h('div', [
                 h('i-switch', {
                   props: {
                     size: 'default',
                     value: params.row.isShow
-                  },
-                  style: {
-                    textAlign: 'center'
                   },
                   on: {
                     'on-change': (value) => {
@@ -89,7 +87,7 @@
 
 <style scoped>
   .columnManage {
-    width: 90%;
+    width: 95%;
     margin: 20px auto;
   }
 </style>

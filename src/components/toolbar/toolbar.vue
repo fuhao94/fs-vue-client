@@ -27,7 +27,7 @@
         </router-link>
       </li>
       <li v-else class="login_status">
-        <router-link class="user_dis" to="/userAdmin/articleManage">
+        <router-link class="user_dis" to="articleManage">
           <img src="/static/images/default_avatar.png">
         </router-link>
         <Dropdown>

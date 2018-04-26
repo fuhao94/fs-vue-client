@@ -58,16 +58,16 @@
       onSelect(val) {
         switch (Number(val)) {
           case 1:
-            this.$router.push('/userAdmin/articleManage')
+            this.$router.push('articleManage')
             break
           case 2:
-            this.$router.push('/userAdmin/commentManage')
+            this.$router.push('commentManage')
             break
           case 3:
-            this.$router.push('/userAdmin/ClassifyManage')
+            this.$router.push('ClassifyManage')
             break
           case 7:
-            this.$router.push('/userAdmin/columnManage')
+            this.$router.push('columnManage')
         }
       }
     }

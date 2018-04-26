@@ -1,9 +1,9 @@
 <template>
   <div class="userManage">
     <ul>
-      <li v-for="(item,index) in userColumn.column" :key="index">
+      <li v-for="(item,index) in userColumn.column" :key="index" v-if="item.isShow">
         <div class="title">{{item.column_name}}</div>
-        <div class="userInfo" v-if="item.column_name==='个人信息' && item.isShow">
+        <div class="userInfo" v-if="item.column_name==='个人信息'">
           <div class="head">
             <img src="/static/images/default_avatar.png" width="62" height="62">
             <div class="name">{{userColumn.username}}</div>
@@ -37,13 +37,13 @@
             </div>
           </div>
         </div>
-        <div class="art_search" v-if="item.column_name==='文章搜索' && item.isShow">
+        <div class="art_search" v-if="item.column_name==='文章搜索'">
           <i-input v-model="keyWords" @on-enter="artSearch" @on-click="artSearch" icon="ios-search"
                    placeholder="请输入文章比标题..."
                    style="width: 90%;"></i-input>
         </div>
-        <div class="art_type" v-if="item.column_name==='文章分类' && item.isShow"></div>
-        <div class="archives" v-if="item.column_name==='文章存档' && item.isShow"></div>
+        <div class="art_type" v-if="item.column_name==='文章分类'"></div>
+        <div class="archives" v-if="item.column_name==='文章存档'"></div>
       </li>
     </ul>
   </div>
@@ -51,6 +51,7 @@
 
 <script>
   import {mapGetters} from 'vuex'
+  import {UTCformat} from '@/common/js/date'
 
   export default {
     props: {},
@@ -89,6 +90,10 @@
         }
         this.$http.post('/art/getArticleList', data).then((res) => {
           if (res.data.status === 1000) {
+            res.data.result.forEach((item) => {
+              item.article_content = item.article_content.replace(/#/g, '')
+              item.meta.updateAt = UTCformat(item.meta.updateAt)
+            })
             this.$emit('hasArtSearch', res.data)
           }
         })
