@@ -23,24 +23,12 @@
       :mask-closable="false">
       <div class="classify">
         <span class="title">个人分类：</span>
-        <i-input @on-enter="stopInput(index)"
-                 @on-blur="stopInput(index)"
-                 v-for="(item,index) in newClassify"
-                 :key="index"
-                 v-model="item.name"
-                 :disabled="item.disabled"
-                 @on-click="removeClassify(index)"
-                 icon="close-round"
-                 size="small"
-                 style="max-width: 80px;margin-right: 10px">
-        </i-input>
-        <span class="add">
-          <i-icon class="newClassifyIcon" type="plus-circled" color="#349edf" @click.native="addClassify" size="18"
-                  title="添加新分类"></i-icon>
-        </span>
+        <div class="list">
+          <i-checkbox-group v-model="classify">
+            <i-checkbox v-for="(item,index) in classifyList" :key="index" :label="item"></i-checkbox>
+          </i-checkbox-group>
+        </div>
       </div>
-      <p>Content of dialog</p>
-      <p>Content of dialog</p>
     </i-modal>
   </div>
 </template>
@@ -58,7 +46,8 @@
         },
         isPublish: true,
         publishModal: false,
-        newClassify: []
+        classify: [],
+        classifyList: []
       }
     },
     computed: {
@@ -78,6 +67,7 @@
       },
       publishConfirm() {
         this.publishModal = true
+        this.getClassifyList()
       },
       publish() {
         let data = {
@@ -111,21 +101,15 @@
           }
         })
       },
-      addClassify() {
-        if (this.newClassify.length >= 3) {
-          return
-        }
-        let classify = {
-          name: '',
-          disabled: false
-        }
-        this.newClassify.push(classify)
-      },
-      stopInput(index) {
-        this.newClassify[index].disabled = true
-      },
-      removeClassify(index) {
-        this.newClassify.splice(index, 1)
+      getClassifyList() {
+        this.$http.get('/users/getClassifyList?userId=' + this.userInfo.userId).then((res) => {
+          res = res.data
+          if (res.status === 1000) {
+            res.result.forEach((item) => {
+              this.classifyList.push(item.name)
+            })
+          }
+        })
       }
     }
   }
@@ -167,12 +151,11 @@
     margin-right: 5px;
   }
 
-  .classify .add {
-    display: flex;
-    align-items: center;
-  }
-
-  .newClassifyIcon:hover {
-    cursor: pointer;
+  .classify .list {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    padding: 0 10px;
+    /*width: 480px;*/
+    /*max-height: 200px;*/
   }
 </style>

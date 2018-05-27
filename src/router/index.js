@@ -105,7 +105,7 @@ const router = new Router({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+/* router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
     if (document.cookie.indexOf('userId') >= 0) {
       next()
@@ -129,7 +129,7 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-})
+}) */
 
 export default router
 

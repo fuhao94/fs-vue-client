@@ -4,7 +4,7 @@
       <i-input v-model="type" placeholder="分类名..." style="width: 200px"></i-input>
       <i-button type="primary" @click.native="addClassify">添加</i-button>
     </div>
-    <i-table :disabled-hover="disabledHover" :columns="columns" :data="classifyList"></i-table>
+    <i-table :disabled-hover="disabledHover" :columns="classify" :data="classifyList"></i-table>
   </div>
 </template>
 
@@ -16,7 +16,7 @@
       let _this = this
       return {
         disabledHover: true,
-        columns: [
+        classify: [
           {
             title: '类别',
             key: 'name'
